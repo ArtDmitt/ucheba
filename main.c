@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <assert.h>
 #include "libs/data_structures/matrix/matrix.h"
 void test_swap_rows_different_rows() {
