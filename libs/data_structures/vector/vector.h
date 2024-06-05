@@ -1,7 +1,3 @@
-//
-// Created by Artem on 05.06.2024.
-//
-
 #ifndef LABA13_VECTOR_H
 #define LABA13_VECTOR_H
 

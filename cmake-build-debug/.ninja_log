@@ -21,3 +21,7 @@
 3	69	7393264066898803	libs/data_structures/CMakeFiles/data_structures.dir/vector/vector_void/vector_void.c.obj	f5486610f4020430
 69	121	7393264067410625	libs/data_structures/libdata_structures.a	bb0395c7aff4edde
 121	184	7393264068022569	laba13.exe	c0f3b430a3676343
+5	71	7393268706159982	libs/data_structures/CMakeFiles/data_structures.dir/vector/vector.c.obj	e5a8880b8094f0
+2	76	7393268706210055	CMakeFiles/laba13.dir/main.c.obj	56e30d311a950a58
+71	121	7393268706666050	libs/data_structures/libdata_structures.a	bb0395c7aff4edde
+121	187	7393268707297054	laba13.exe	c0f3b430a3676343
