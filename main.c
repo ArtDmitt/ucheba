@@ -1,167 +1,176 @@
 #include <stdio.h>
 #include <assert.h>
-#include "libs/data_structures/vector/vector.h"
-#include "libs/data_structures/vector/vector_void/vector_void.h"
+#include "libs/data_structures/matrix/matrix.h"
+void test_swap_rows_different_rows() {
+    matrix m1 = create_matrix_from_array((int[]){1, 2,
+                                                 3,4}, 2, 2);
+    matrix m2 = create_matrix_from_array((int[]){3, 4,
+                                                 1,2}, 2, 2);
+    swap_rows(&m2, 0, 1);
+    assert(are_two_matrices_equal(&m1, &m2));
+    free_mem_matrix(&m1);
+    free_mem_matrix(&m2);
+}
+void test_swap_rows_different_columns() {
+    matrix m1 = create_matrix_from_array((int[]){1, 2,
+                                                 3,4}, 2, 2);
+    matrix m2 = create_matrix_from_array((int[]){2, 1,
+                                                 4,3}, 2, 2);
+    swap_columns(&m2, 0, 1);
+    assert(are_two_matrices_equal(&m1, &m2));
+    free_mem_matrix(&m1);
+    free_mem_matrix(&m2);
+}
+void test_swap() {
+    test_swap_rows_different_rows();
+    test_swap_rows_different_columns();
+}
+// возвращает сумму элементов массива.
+int get_sum(int *a, int n) {
+    int res = 0;
+    for (int i = 0; i < n; i++) {
+        res += a[i];
+    }
+    return res;
+}
+void test_sort_insertion_sort_rows_different_rows() {
+    matrix m1 = create_matrix_from_array((int[]) {2, 3, 4,
+                                                  8,9,10,
+                                                  5,6,7},3,3);
+    matrix m2 = create_matrix_from_array((int[]) {2, 3, 4,
+                                                  5,6,7,
+                                                  8,9,10},3,3);
+    insertion_sort_rows_matrix_by_row_criteria(&m1, get_sum);
 
-void test_push_back_empty_vector() {
-    vector v = create_vector(0);
-    v.size = 0;
-    assert(is_empty(&v));
-
-    push_back(&v, 1);
-
-    assert(v.size == 1 && v.capacity == 1);
+    assert(are_two_matrices_equal(&m1, &m2));
+    free_mem_matrix(&m1);
+    free_mem_matrix(&m2);
+}
+void test_selection_sort_cols_different_columns() {
+    matrix m1 = create_matrix_from_array((int[]) {3, 1, 2,
+                                                  3,1,2,
+                                                  3,1,2},3,3);
+    matrix m2 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  1,2,3,
+                                                  1,2,3},3,3);
+    selection_sort_cols_matrix_by_col_criteria(&m1, get_sum);
+    assert(are_two_matrices_equal(&m1, &m2));
+    free_mem_matrix(&m1);
+    free_mem_matrix(&m2);
+}
+void test_sort() {
+    test_sort_insertion_sort_rows_different_rows();
+    test_selection_sort_cols_different_columns();
+}
+void test_square_matrix_is_not_square() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  4,5, 6},2,3);
+    assert(!is_square_matrix(&m1));
+    free_mem_matrix(&m1);
+}
+void test_square_matrix_is_square() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  4,5, 6,
+                                                  7,8,9},3,3);
+    assert(is_square_matrix(&m1));
+    free_mem_matrix(&m1);
+}
+void test_square_matrix() {
+    test_square_matrix_is_not_square();
+    test_square_matrix_is_square();
+}
+void test_e_matrix_is_e_matrix() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 0, 0,
+                                                  0,1, 0,
+                                                  0,0,1},3,3);
+    assert(is_e_matrix(&m1));
+    free_mem_matrix(&m1);
 }
 
-
-void test_push_back_full_vector() {
-    vector v = create_vector(1);
-    v.size = 1;
-    assert(is_full(&v));
-
-    push_back(&v, 2);
-
-    assert(v.size == 2 && v.capacity == 2);
+void test_e_matrix_is_not_e_matrix() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  0,1, 0,
+                                                  0,8,1},3,3);
+    assert(!is_e_matrix(&m1));
+    free_mem_matrix(&m1);
 }
-
-void test_pop_back_not_empty_vector() {
-    vector v = create_vector(0);
-    push_back(&v, 10);
-    assert(v.size == 1);
-
-    pop_back(&v);
-    assert(v.size == 0);
-    assert(v.capacity == 1);
+void test_e_matrix() {
+    test_e_matrix_is_e_matrix();
+    test_e_matrix_is_not_e_matrix();
 }
-
-void test_at_vector_not_empty_vector() {
-    int array[] = {5};
-    vector v = {array, 1, 1};
-
-    int* element = at_vector(&v, 0);
-    assert(*element == 5);
+void test_symmetric_matrix_is_not_symmetric() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  4,5, 6,
+                                                  7,8,9},3,3);
+    assert(!is_symmetric_matrix(&m1));
+    free_mem_matrix(&m1);
 }
-
-void test_at_vector_request_to_last_element() {
-    int array[] = {1, 2, 3, 4, 5};
-    vector v = {array, 5, 5};
-
-    int *last_element = at_vector(&v, v.size - 1);
-    assert(*last_element == 5);
+void test_symmetric_matrix_is_symmetric() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  2,1, 5,
+                                                  3,5,1},3,3);
+    assert(is_symmetric_matrix(&m1));
+    free_mem_matrix(&m1);
 }
-
-void test_back_one_element_in_vector() {
-    int array[] = {1, 2, 3};
-    vector v = {array, 3, 3};
-
-    int* element = back(&v);
-    assert(*element == 3);
+void test_symmetric_matrix() {
+    test_symmetric_matrix_is_not_symmetric();
+    test_symmetric_matrix_is_symmetric();
 }
-
-void test_front_one_element_in_vector() {
-    int array[] = {1,2,3};
-    vector v = {array, 3, 3};
-
-    int* element = front(&v);
-
-    assert(*element == 1);
+void test_transpose_matrix_square_matrix() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  4,5,6,
+                                                  7,8,9},3,3);
+    matrix m2 = create_matrix_from_array((int[]) {1, 4, 7,
+                                                  2,5,8,
+                                                  3,6,9},3,3);
+    transpose_square_matrix(&m2);
+    assert(are_two_matrices_equal(&m1, &m2));
+    free_mem_matrix(&m1);
+    free_mem_matrix(&m2);
 }
-
-void test_vector() {
-    test_push_back_empty_vector();
-    test_push_back_full_vector();
-    test_pop_back_not_empty_vector();
-    test_at_vector_not_empty_vector();
-    test_at_vector_request_to_last_element();
-    test_back_one_element_in_vector();
-    test_front_one_element_in_vector();
+void test_transpose_matrix_not_square(){
+    matrix m1 = create_matrix_from_array((int[]) {1, 4,
+                                                  2,5,
+                                                  3,6},3,2);
+    matrix m2 = create_matrix_from_array((int[]) {1, 2, 3,
+                                                  13
+            ,5,6},2,3);
+    transpose_matrix(&m2);
+    assert(are_two_matrices_equal(&m1, &m2));
+    free_mem_matrix(&m1);
+    free_mem_matrix(&m2);
 }
-
-void test_push_back_v_empty_vector() {
-    vector_void v = create_vector_void(0, sizeof(int));
-    v.size = 0;
-    assert(is_empty_v(&v));
-
-    int x = 1;
-    push_back_v(&v, &x);
-
-    assert(v.size == 1 && v.capacity == 1);
+void test_transpose_matrix() {
+    test_transpose_matrix_square_matrix();
+    test_transpose_matrix_not_square();
 }
-
-
-void test_push_back_v_full_vector() {
-    vector_void v = create_vector_void(1, sizeof(float));
-    v.size = 1;
-    assert(is_full_v(&v));
-
-    float x = 2.3;
-    push_back_v(&v, &x);
-
-    assert(v.size == 2 && v.capacity == 2);
+void get_value_get_min_value() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 4,
+                                                  2,5},2,2);
+    position res = get_min_value_pos(m1);
+    assert(res.row_index == 0 && res.col_index == 0);
+    free_mem_matrix(&m1);
 }
-
-void test_get_vector_value_v() {
-    float array[] = {5.55, 6.56, 7.243};
-    vector_void v = {array, 3, 3, sizeof(float)};
-
-    float x = 8.23;
-    float y = 7.243;
-    get_vector_value_v(&v, 2, &x);
-
-    assert(is_full_v(&v));
-    assert(x == y);
+void get_value_get_max_value() {
+    matrix m1 = create_matrix_from_array((int[]) {1, 4,
+                                                  2,5},2,2);
+    position res = get_max_value_pos(m1);
+    assert(res.row_index == 1 && res.col_index == 1);
+    free_mem_matrix(&m1);
 }
-
-void test_set_vector_value_v() {
-    float array[] = {5.55, 6.56, 7.243};
-    vector_void v = {array, 3, 3, sizeof(float)};
-
-    float x = 8.23;
-    set_vector_value_v(&v, 2, &x);
-
-    assert(is_full_v(&v));
+void test_get_value() {
+    get_value_get_min_value();
+    get_value_get_max_value();
 }
-
-void test_vector_shrink_to_fit_v() {
-    int array[] = {1, 2, 3};
-    vector_void v = {array, 3, 30, sizeof(int)};
-
-    vector_shrink_to_fit_v(&v);
-    assert(is_full_v(&v));
-}
-
-void test_clear_v() {
-    int array[] = {1, 2, 3};
-    vector_void v = {array, 3, 3, sizeof(int)};
-
-    clear_v(&v);
-    assert(is_empty_v(&v));
-}
-
-void test_pop_back_v() {
-    int array[] = {1, 2, 3};
-    vector_void v = {array, 3, 3, sizeof(int)};
-
-    pop_back_v(&v);
-    assert(v.size == 2);
-}
-
-void test_vector_void() {
-    test_push_back_v_empty_vector();
-    test_push_back_v_full_vector();
-    test_get_vector_value_v();
-    test_set_vector_value_v();
-    test_vector_shrink_to_fit_v();
-    test_clear_v();
-}
-
 void test() {
-    test_vector();
-    test_vector_void();
+    test_swap();
+    test_sort();
+    test_square_matrix();
+    test_e_matrix();
+    test_symmetric_matrix();
+    test_transpose_matrix();
+    test_get_value();
 }
-
 int main () {
     test();
-
-    return 0;
 }
